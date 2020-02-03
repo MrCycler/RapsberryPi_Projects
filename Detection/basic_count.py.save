@@ -1,0 +1,21 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(12,GPIO.IN)
+
+i = 0
+
+while  i != 100:
+        i = i+1
+        if GPIO.input(12):
+                time.sleep(1)
+                print('Detected')
+        else:
+                time.sleep(1)
+                print('No detected')
+
+k = cv2.waitKey(30) & 0xff
+    if k == 27:
+        break
+

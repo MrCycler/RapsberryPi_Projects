@@ -8,7 +8,7 @@ img = cv2.imread('caras.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 for (x,y,w,h) in faces:
-    print x,y,w,h
+    print ( x,y,w,h)
     cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),3)
     roi_gray = gray[y:y+h, x:x+w]
     roi_color = img[y:y+h, x:x+w]
