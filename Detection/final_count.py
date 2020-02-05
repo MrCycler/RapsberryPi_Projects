@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
-from threading import Thread
+#from threading import Thread
+import multiprocessing
 import numpy as np
 import time
 import cv2
@@ -15,12 +16,14 @@ def contador_hilo1():
     GPIO.setup(11,GPIO.IN)
 
     global contador_a
+    global contador_b
+    global contador_c
 
     while  1:
-        channel = GPIO.wait_for_edge(11,GPIO.RISING,timeout=3000)
+        channel = GPIO.wait_for_edge(11,GPIO.FALLING,timeout=3000)
         if channel is None:
             #print('Timeout')
-            if GPIO.input(11):
+            if GPIO.input(11)==0:
                 print('Translape Carril 1')
                 contador_a = contador_a + 1
                 print('-----------------------------------')
@@ -49,11 +52,13 @@ def contador_hilo2():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(12,GPIO.IN)
 
+    global contador_a
     global contador_b
+    global contador_c
 
     while  1:
-        channel = GPIO.wait_for_edge(12,GPIO.RISING,timeout=3000)
-        if channel is None:
+        channel2 = GPIO.wait_for_edge(12,GPIO.RISING,timeout=3000)
+        if channel2 is None:
             #print('Timeout')
             if GPIO.input(12):
                 print('Translape Carril 2')
@@ -84,11 +89,13 @@ def contador_hilo3():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(13,GPIO.IN)
 
+    global contador_a
+    global contador_b
     global contador_c
 
     while  1:
-        channel = GPIO.wait_for_edge(13,GPIO.RISING,timeout=3000)
-        if channel is None:
+        channel3 = GPIO.wait_for_edge(13,GPIO.RISING,timeout=3000)
+        if channel3 is None:
             #print('Timeout')
             if GPIO.input(13):
                 print('Translape Carril 3')
@@ -141,12 +148,13 @@ def video_hilo():
     cap.release()
     cv2.destroyAllWindows()
 
-hilo1 = Thread(target=contador_hilo1)
-hilo2 = Thread(target=contador_hilo2)
-hilo3 = Thread(target=contador_hilo3)
-hilo4 = Thread(target=video_hilo)
+hilo1 = multiprocessing.Process(target=contador_hilo1)
+hilo2 = multiprocessing.Process(target=contador_hilo2)
+hilo3 = multiprocessing.Process(target=contador_hilo3)
+hilo4 = multiprocessing.Process(target=video_hilo)
 
 hilo1.start()
 hilo2.start()
 hilo3.start()
 hilo4.start()
+
