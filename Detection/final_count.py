@@ -5,19 +5,19 @@ import numpy as np
 import time
 import cv2
 
-contador_a = 0
-contador_b = 0
-contador_c = 0
-contador_total = 0
+contador_a = multiprocessing.Value('i') 
+contador_b = multiprocessing.Value('i') 
+contador_c = multiprocessing.Value('i') 
+contador_total = multiprocessing.Value('i') 
+contador_a.value = 0
+contador_b.value = 0
+contador_c.value = 0
+contador_total.value = 0
 
-def contador_hilo1():
+def contador_hilo1(contador_a,contador_b,contador_c,contador_total):
 
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(11,GPIO.IN)
-
-    global contador_a
-    global contador_b
-    global contador_c
 
     while  1:
         channel = GPIO.wait_for_edge(11,GPIO.FALLING,timeout=3000)
@@ -25,36 +25,32 @@ def contador_hilo1():
             #print('Timeout')
             if GPIO.input(11)==0:
                 print('Translape Carril 1')
-                contador_a = contador_a + 1
+                contador_a.value = contador_a.value + 1
                 print('-----------------------------------')
-                print('Cuenta Carril 1:', contador_a)
-                print('Cuenta Carril 2:', contador_b)
-                print('Cuenta Carril 3:', contador_c)
-                contador_total = contador_a + contador_b + contador_c
-                print('Cuenta Total:',contador_total)
+                print('cuenta 1:',contador_a.value)
+                print('cuenta 2:',contador_b.value)
+                print('cuenta 3:',contador_c.value)
+                contador_total.value = contador_a.value + contador_b.value + contador_c.value
+                print('cuenta total:',contador_total.value)
                 print('-----------------------------------')
         else:
-            contador_a = contador_a + 1
+            contador_a.value = contador_a.value + 1
             print('-----------------------------------')
-            print('Cuenta Carril 1:', contador_a)
-            print('Cuenta Carril 2:', contador_b)
-            print('Cuenta Carril 3:', contador_c)
-            contador_total = contador_a + contador_b + contador_c
-            print('Cuenta Total:',contador_total)
+            print('cuenta 1:',contador_a.value)
+            print('cuenta 2:',contador_b.value)
+            print('cuenta 3:',contador_c.value)
+            contador_total.value = contador_a.value + contador_b.value + contador_c.value
+            print('cuenta total:',contador_total.value)
             print('-----------------------------------')
             time.sleep(0.5)
         k = cv2.waitKey(10) & 0xff
         if k == ord('q'):
             break
 
-def contador_hilo2():
+def contador_hilo2(contador_a,contador_b,contador_c,contador_total):
     
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(12,GPIO.IN)
-
-    global contador_a
-    global contador_b
-    global contador_c
 
     while  1:
         channel2 = GPIO.wait_for_edge(12,GPIO.RISING,timeout=3000)
@@ -62,36 +58,32 @@ def contador_hilo2():
             #print('Timeout')
             if GPIO.input(12):
                 print('Translape Carril 2')
-                contador_b = contador_b + 1
+                contador_b.value = contador_b.value + 1
                 print('-----------------------------------')
-                print('Cuenta Carril 1:', contador_a)
-                print('Cuenta Carril 2:', contador_b)
-                print('Cuenta Carril 3:', contador_c)
-                contador_total = contador_a + contador_b + contador_c
-                print('Cuenta Total:',contador_total)
+                print('cuenta 1:',contador_a.value)
+                print('cuenta 2:',contador_b.value)
+                print('cuenta 3:',contador_c.value)
+                contador_total.value = contador_a.value + contador_b.value + contador_c.value
+                print('cuenta total:',contador_total.value)
                 print('-----------------------------------')
         else:
-            contador_b = contador_b + 1
+            contador_b.value = contador_b.value + 1
             print('-----------------------------------')
-            print('Cuenta Carril 1:', contador_a)
-            print('Cuenta Carril 2:', contador_b)
-            print('Cuenta Carril 3:', contador_c)
-            contador_total = contador_a + contador_b + contador_c
-            print('Cuenta Total:',contador_total)
+            print('cuenta 1:',contador_a.value)
+            print('cuenta 2:',contador_b.value)
+            print('cuenta 3:',contador_c.value)
+            contador_total.value = contador_a.value + contador_b.value + contador_c.value
+            print('cuenta total:',contador_total.value)
             print('-----------------------------------')
             time.sleep(0.5)
         k = cv2.waitKey(10) & 0xff
         if k == ord('q'):
             break
 
-def contador_hilo3():
+def contador_hilo3(contador_a,contador_b,contador_c,contador_total):
     
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(13,GPIO.IN)
-
-    global contador_a
-    global contador_b
-    global contador_c
 
     while  1:
         channel3 = GPIO.wait_for_edge(13,GPIO.RISING,timeout=3000)
@@ -99,22 +91,22 @@ def contador_hilo3():
             #print('Timeout')
             if GPIO.input(13):
                 print('Translape Carril 3')
-                contador_c = contador_c + 1
+                contador_c.value = contador_c.value + 1
                 print('-----------------------------------')
-                print('Cuenta Carril 1:', contador_a)
-                print('Cuenta Carril 2:', contador_b)
-                print('Cuenta Carril 3:', contador_c)
-                contador_total = contador_a + contador_b + contador_c
-                print('Cuenta Total:',contador_total)
+                print('cuenta 1:',contador_a.value)
+                print('cuenta 2:',contador_b.value)
+                print('cuenta 3:',contador_c.value)
+                contador_total.value = contador_a.value + contador_b.value + contador_c.value
+                print('cuenta total:',contador_total.value)
                 print('-----------------------------------')
         else:
-            contador_c = contador_c + 1
+            contador_c.value = contador_c.value + 1
             print('-----------------------------------')
-            print('Cuenta Carril 1:', contador_a)
-            print('Cuenta Carril 2:', contador_b)
-            print('Cuenta Carril 3:', contador_c)
-            contador_total = contador_a + contador_b + contador_c
-            print('Cuenta Total:',contador_total)
+            print('cuenta 1:',contador_a.value)
+            print('cuenta 2:',contador_b.value)
+            print('cuenta 3:',contador_c.value)
+            contador_total.value = contador_a.value + contador_b.value + contador_c.value
+            print('cuenta total:',contador_total.value)
             print('-----------------------------------')
             time.sleep(0.5)
         k = cv2.waitKey(10) & 0xff
@@ -148,9 +140,9 @@ def video_hilo():
     cap.release()
     cv2.destroyAllWindows()
 
-hilo1 = multiprocessing.Process(target=contador_hilo1)
-hilo2 = multiprocessing.Process(target=contador_hilo2)
-hilo3 = multiprocessing.Process(target=contador_hilo3)
+hilo1 = multiprocessing.Process(target=contador_hilo1,args=(contador_a,contador_b,contador_c,contador_total))
+hilo2 = multiprocessing.Process(target=contador_hilo2,args=(contador_a,contador_b,contador_c,contador_total))
+hilo3 = multiprocessing.Process(target=contador_hilo3,args=(contador_a,contador_b,contador_c,contador_total))
 hilo4 = multiprocessing.Process(target=video_hilo)
 
 hilo1.start()
