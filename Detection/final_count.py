@@ -114,25 +114,25 @@ def contador_hilo3(contador_a,contador_b,contador_c,contador_total):
             break
 
 def video_hilo():
-    #Se crea el clasificador con el archivo .xml
-    object_cascade = cv2.CascadeClassifier('object_cascade.xml')
-
     #Captura una imagen
     cap = cv2.VideoCapture(0)
 
     while 1:
         #Se extrae la imagen
         ret, img = cap.read()
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-       
-        #Se detectan los objetos
-        objects = object_cascade.detectMultiScale(gray, 50, 50)
-    
-        #Se dibujan los rectangulos sobre los objetos
-        for (x,y,w,h) in objects:
-            cv2.rectangle(img,(x,y),(x+w,y+h),(255,255,0),2)
-
-        cv2.imshow('img',img)
+        #Mascara definida
+        lower_black = np.array([0,0,0], dtype = "uint16")
+        upper_black = np.array([40,40,40], dtype = "uint16")
+        black_mask = cv2.inRange(img, lower_black, upper_black)
+        #Se muestran el numero de pixeles asociados
+        num_pixeles = np.sum(black_mask == 255)
+        if num_pixeles > 40000:
+            print('-----------------------------------')
+            print('Determinación de masa')
+            print('Número de pixeles:',num_pixeles)
+            print('-----------------------------------')
+        #Se muestra la imagen detectada
+        cv2.imshow('Detección',black_mask)
         k = cv2.waitKey(30) & 0xff
         if k == ord('q'):
             break
