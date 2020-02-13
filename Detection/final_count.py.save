@@ -127,12 +127,12 @@ def video_hilo():
         #Se muestran el numero de pixeles asociados
         num_pixeles = np.sum(black_mask == 255)
         if num_pixeles > 40000:
-            print('-----------------------------------')
+            
+print('-----------------------------------')
             print('Determinación de masa')
             print('Número de pixeles:',num_pixeles)
             print('-----------------------------------')
-       	    time.sleep(5)
-	#Se muestra la imagen detectada
+        #Se muestra la imagen detectada
         cv2.imshow('Detección',black_mask)
         k = cv2.waitKey(30) & 0xff
         if k == ord('q'):
